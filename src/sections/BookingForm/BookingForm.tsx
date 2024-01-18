@@ -62,15 +62,15 @@ const BookingForm = () => {
                 <h6 className='font-bold text-[26px] text-center ' >Book an Appointment for <br></br> <span className='line-through text-[#00acc1] decoration-white'>Rs 1000</span>  FREE</h6>
                 <p className='text-center text-[#00acc1]'>60+ Expert Physiotherapists for 200+ Conditions</p>
 
-                <FormInput svgData={formSvgData[0]} placeholder='Your Name' type='text' value={formData.name} onChange={(value) => handleInputChange('name', value)} />
+                <FormInput svgData={formSvgData[0]} placeholder='Name' type='text' value={formData.name} onChange={(value) => handleInputChange('name', value)} />
                 <FormInput svgData={formSvgData[1]} placeholder='+91' type='number' value={formData.phone} onChange={(value) => handleInputChange('phone', value)} />
 
 
 
                 <section className='flex items-center gap-4 relative'>
-                    <FormInput svgData={formSvgData[2]} placeholder='Your Age' type='number' value={formData.age} onChange={(value) => handleInputChange('age', value)} />
-                    <FormInput svgData={formSvgData[3]} placeholder='Your City' type='text' value={formData.city} onChange={(value) => handleInputChange('city', value)} />
-                    <FormInput svgData={formSvgData[4]} placeholder='Your Company' type='text' value={formData.company} onChange={(value) => handleInputChange('company', value)} />
+                    <FormInput svgData={formSvgData[2]} placeholder='Age' type='number' value={formData.age} onChange={(value) => handleInputChange('age', value)} />
+                    <FormInput svgData={formSvgData[3]} placeholder='City' type='text' value={formData.city} onChange={(value) => handleInputChange('city', value)} />
+                    <FormInput svgData={formSvgData[4]} placeholder='Company' type='text' value={formData.company} onChange={(value) => handleInputChange('company', value)} />
 
                     <div className={` absolute top-[50px] flex flex-col w-full rounded-md overflow-hidden ${selectedCityDoctors.length && ' border-solid border-[1px] border-white'} `}>
                         {selectedCityDoctors.map((item) => (
@@ -86,7 +86,7 @@ const BookingForm = () => {
                 </section>
 
 
-                <textarea className='border-solid border-[1px] border-[#AFB9BB] outline-none rounded-[6px] px-10 py-3 text-[12px] md:text-[16px]  w-full text-[#4C5864]  placeholder:text-[#4C5864]' placeholder='Complaints...' />
+                <textarea className='border-solid border-[1px] border-[#AFB9BB] outline-none rounded-[6px] px-10 py-3 text-[12px] md:text-[16px]  w-full text-[#4C5864]  placeholder:text-[#4C5864]' placeholder='Message...' />
 
                 {
                     parseInt(formData.age) >= 40 && (
