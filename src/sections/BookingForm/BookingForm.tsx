@@ -1,15 +1,14 @@
-import { formSvgData, doctorsArray } from '../../config/data';
+import { formSvgData } from '../../config/data';
 import { useState } from 'react';
 import { FormInput } from '../../components/FormInput/FormInput';
-
-interface Doctor {
-    name: string;
-    expertise: string;
-    city: string;
-}
-
+import { useSelector } from 'react-redux';
+import { useAppDispatch, RootState, AppDispatch } from '../../redux/store';
+import { getDoctorsListByCity } from '../../redux/features/doctor/doctorSlice';
+import { resetDoctorsData } from '../../redux/features/doctor/doctorSlice';
 const BookingForm = () => {
-    const [selectedCityDoctors, setSelectedCityDoctors] = useState<Doctor[]>([]);
+
+    const { doctorsData } = useSelector((state: RootState) => state.doctor);
+    const dispatch: AppDispatch = useAppDispatch();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -17,7 +16,6 @@ const BookingForm = () => {
         age: '',
         city: '',
         company: ''
-        // Add more fields as needed
     });
 
 
@@ -27,13 +25,9 @@ const BookingForm = () => {
             [fieldName]: value,
         }));
 
-
         if (fieldName === 'city') {
-            const filteredDoctors: Doctor[] = doctorsArray.filter(doctor => doctor.city.toLowerCase().startsWith(value.toLowerCase()));
-            if (value.length === 0) setSelectedCityDoctors([])
-            else setSelectedCityDoctors(filteredDoctors)
+            dispatch(getDoctorsListByCity({ city: value }));
         }
-
     };
 
 
@@ -49,9 +43,9 @@ const BookingForm = () => {
         setShowBestDoctors((prev) => !prev);
     };
 
-    const handleSelectCity = (city:string) => {
-     setFormData({...formData , 'city' : city})
-     setSelectedCityDoctors([])
+    const handleSelectCity = (city: string) => {
+        setFormData({ ...formData, 'city': city })
+        dispatch(resetDoctorsData())
     };
 
 
@@ -72,9 +66,9 @@ const BookingForm = () => {
                     <FormInput svgData={formSvgData[3]} placeholder='City' type='text' value={formData.city} onChange={(value) => handleInputChange('city', value)} />
                     <FormInput svgData={formSvgData[4]} placeholder='Company' type='text' value={formData.company} onChange={(value) => handleInputChange('company', value)} />
 
-                    <div className={` absolute top-[50px] flex flex-col w-full rounded-md overflow-hidden ${selectedCityDoctors.length && ' border-solid border-[1px] border-white'} `}>
-                        {selectedCityDoctors.map((item) => (
-                            <ul onClick={()=>handleSelectCity(item.city)} className='flex items-center justify-between px-4 py-2 bg-[#060f17] cursor-pointer w-full  border-solid border-b-[1px] border-white'>
+                    <div className={` absolute top-[50px] flex flex-col w-full rounded-md overflow-hidden ${doctorsData.length && ' border-solid border-[1px] border-white'} `}>
+                        {doctorsData.map((item) => (
+                            <ul onClick={() => handleSelectCity(item.city)} className='flex items-center justify-between px-4 py-2 bg-[#060f17] cursor-pointer w-full  border-solid border-b-[1px] border-white'>
                                 <li>{item.name}</li>
                                 <li>{item.city}</li>
                                 <li>{item.expertise}</li>
