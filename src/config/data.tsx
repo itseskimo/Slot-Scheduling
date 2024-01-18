@@ -101,3 +101,42 @@ c-27.114,0-49.191-22.076-49.191-49.191C148.658,110.2,170.734,88.138,197.849,88.1
 </g>
 </svg>`
 ]
+
+
+
+
+export const doctorsArray = [
+  { name: "Dr. Ananya Sharma", expertise: "Cardiologist", city: "Ahmedabad" },
+  { name: "Dr. Vikram Singh", expertise: "Orthopedic Surgeon", city: "Bangalore" },
+  { name: "Dr. Priya Patel", expertise: "Dermatologist", city: "Chennai" },
+  { name: "Dr. Sanjay Gupta", expertise: "Pediatrician", city: "Delhi" },
+  { name: "Dr. Nisha Reddy", expertise: "Gynecologist", city: "Ernakulam" },
+  { name: "Dr. Rajiv Verma", expertise: "Neurologist", city: "Faridabad" },
+  { name: "Dr. Aisha Khan", expertise: "Ophthalmologist", city: "Goa" },
+  { name: "Dr. Rahul Joshi", expertise: "General Practitioner", city: "Hyderabad" },
+  { name: "Dr. Meena Kapoor", expertise: "Psychiatrist", city: "Indore" },
+  { name: "Dr. Arjun Singh", expertise: "Dentist", city: "Jaipur" },
+  { name: "Dr. Kavita Gupta", expertise: "ENT Specialist", city: "Kolkata" },
+  { name: "Dr. Harish Desai", expertise: "Urologist", city: "Lucknow" },
+  { name: "Dr. Preeti Sharma", expertise: "Endocrinologist", city: "Mumbai" },
+  { name: "Dr. Manish Tiwari", expertise: "Cardiac Surgeon", city: "Nagpur" },
+  { name: "Dr. Neha Singh", expertise: "Pulmonologist", city: "Ooty" },
+  { name: "Dr. Prakash Raj", expertise: "Rheumatologist", city: "Pune" },
+  { name: "Dr. Anjali Deshmukh", expertise: "Oncologist", city: "Quilon" },
+  { name: "Dr. Vikas Kumar", expertise: "Nephrologist", city: "Raipur" },
+  { name: "Dr. Sunita Bansal", expertise: "Gastroenterologist", city: "Surat" },
+  { name: "Dr. Anand Tiwari", expertise: "Vascular Surgeon", city: "Trivandrum" },
+  { name: "Dr. Pooja Saxena", expertise: "Dietician", city: "Udaipur" },
+  { name: "Dr. Rajesh Malhotra", expertise: "Hematologist", city: "Vadodara" },
+  { name: "Dr. Kirti Sharma", expertise: "Radiologist", city: "Warangal" },
+  { name: "Dr. Sameer Desai", expertise: "Plastic Surgeon", city: "Xiamen" }, // City with 'X'
+  { name: "Dr. Yash Kapoor", expertise: "Allergist", city: "Yavatmal" },
+  { name: "Dr. Zoya Khan", expertise: "Dental Surgeon", city: "Zirakpur" },
+  // Additional doctors for existing cities
+  { name: "Dr. Deepak Patel", expertise: "Oncologist", city: "Ambala" },
+  { name: "Dr. Sneha Gupta", expertise: "Dermatologist", city: "Bangalore" },
+  { name: "Dr. Rohit Verma", expertise: "Orthopedic Surgeon", city: "Chennai" },
+  { name: "Dr. Maya Reddy", expertise: "Gynecologist", city: "Delhi" },
+  { name: "Dr. Rajat Sharma", expertise: "Cardiologist", city: "Ernakulam" },
+  { name: "Dr. Nidhi Singh", expertise: "Pediatrician", city: "Faridabad" }
+];
