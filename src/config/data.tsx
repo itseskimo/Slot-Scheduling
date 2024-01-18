@@ -143,3 +143,4 @@ export const doctorsArray = [
 
 
 export const navData = ['Home', 'Service', 'Blogs', 'About']
+
