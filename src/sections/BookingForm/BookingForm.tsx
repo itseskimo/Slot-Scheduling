@@ -108,9 +108,8 @@ const BookingForm = () => {
                     <label className='cursor-pointer'>Show best available doctors for their city</label>
                 </div>
 
-                <div className='box'>
-                    <section className='hoveroverlay'>    </section>
-                    <ul className='sparkle'></ul>
+                <div className='submitBtn'>
+                    <section className='submitBtnOverlay'>    </section>
                     <span></span>
                     <h6>Start Your Recovery</h6>
                 </div>

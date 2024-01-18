@@ -140,3 +140,6 @@ export const doctorsArray = [
   { name: "Dr. Rajat Sharma", expertise: "Cardiologist", city: "Ernakulam" },
   { name: "Dr. Nidhi Singh", expertise: "Pediatrician", city: "Faridabad" }
 ];
+
+
+export const navData = ['Home', 'Service', 'Blogs', 'About']
