@@ -19,6 +19,9 @@
 }
 
 
+
+/* SUBMIT BUTTON */
+
 .box {
     position: relative;
     cursor: pointer;
@@ -52,16 +55,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
 .box span {
     position: absolute;
     background-color: #0e0423;
@@ -75,10 +68,8 @@
     font-weight: 100;
     z-index: 2;
     color: white;
-    /* pointer-events: none; */
+    pointer-events: none;
 }
-
-
 
 .hoveroverlay {
     position: absolute;
@@ -94,3 +85,74 @@
 .hoveroverlay:hover {
     opacity: 1;
 }
+
+
+
+
+/* CAROUSEL */
+
+
+.embla {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+  
+  .embla__container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .embla__slide {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  
+  .embla__buttons {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: aqua;
+    width: 100%;
+  }
+  
+  .embla__button {
+    z-index: 1;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 30px;
+    height: 90px;
+    border-radius: 5px;
+    background-color: white;
+  }
+  
+  @media(max-width:768px) {
+    .embla__button {
+      display: none;
+    }
+  }
+  
+  .embla__button:disabled {
+    opacity: 0.3;
+  }
+  
+  .embla__button__svg {
+    width: 65%;
+    height: 65%;
+  }
+  
+  .embla__button--prev {
+    position: absolute;
+    left: 0;
+  }
+  
+  .embla__button--next {
+    position: absolute;
+    right: 0;
+  }
+  
