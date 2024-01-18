@@ -34,21 +34,23 @@ const Testimonials = () => {
   }, [emblaApi, onSelect])
 
   return (
-    <div className='bg-[#060f17]'>
+    <div className='bg-[#060f17] relative '>
 
-      <div className="embla bg-gray-900 testimonial-bg ">
-        <div className="embla__viewport my-[120px]" ref={emblaRef}>
+      <div className=' flex-col gap-3 flex items-center justify-center absolute z-10 left-[50%] top-[22%] transform -translate-x-1/2 -translate-y-1/2'>
+        <h6 className='text-white  text-6xl font-semibold'>Testimonials</h6>
+        <p className='h-1 w-20 bg-[#00acc1] rounded-md'></p>
+      </div>
 
-          <div className=' flex-col gap-4 flex items-center justify-center py-10'>
-            <h6 className='text-white  text-6xl font-semibold'>Testimonials</h6>
-            <p className='h-1 w-20 bg-[#00acc1]'></p>
-          </div>
+      <div className="embla bg-gray-900 testimonial-bg  " >
 
-          <div className="embla__container">
+        <div className="embla__viewport my-[280px]" ref={emblaRef}>
+
+          <div className="embla__container ">
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 1, 1, 1, 1, 1, 11, 11, 1, 1, 1, 1].map(() => (
-              <div className="cursor-pointer p-[16px] text-white mr-[25px]   shadow flex flex-col justify-between embla__slide  w-[260px] bg-slate-100">
+              <div 
+              className="cursor-pointer p-[16px] text-white mr-[25px]   shadow flex flex-col justify-between embla__slide  w-[260px] bg-[#060f17] rounded-3xl">
 
-                <img src='./img/MODEL.jpg' className='h-[160px]' />
+                <img src='./img/MODEL.jpg' className='h-[160px] rounded-3xl' />
 
                 <p className="text-[16px] py-4">They worked around time zone variations to accomodate my schedule</p>
                 <h6 className=" font-semibold">Pranjal Deep</h6>
