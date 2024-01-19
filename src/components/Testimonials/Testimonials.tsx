@@ -52,7 +52,7 @@ const Testimonials = () => {
           <div className="embla__viewport " ref={emblaRef}>
 
             <div className="embla__container ">
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 1, 1, 1, 1, 1, 11, 11, 1, 1, 1, 1].map((idx) => (
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 1, 1, 1, 1, 1, 11, 11, 1, 1, 1, 1].map((_,idx) => (
                 <div key={idx}
                   className="cursor-pointer p-[16px] text-white mr-[25px] shadow flex flex-col items-center  embla__slide  w-[320px] bg-[#060f17] rounded-3xl">
 

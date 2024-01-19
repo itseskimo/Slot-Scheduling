@@ -4,12 +4,11 @@ import { FormInput } from '../../components/FormInput/FormInput';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, RootState, AppDispatch } from '../../redux/store';
 import { getDoctorsListByCity } from '../../redux/features/doctor/doctorSlice';
-import { resetDoctorsData, setPopUpVisibility } from '../../redux/features/doctor/doctorSlice';
-import { MouseEvent } from 'react';
+import { resetDoctorsData, setPopUpVisibility, setUserInfo } from '../../redux/features/doctor/doctorSlice';
 
 const BookingForm = () => {
 
-    const { doctorsData } = useSelector((state: RootState) => state.doctor);
+    const { doctorsData, isPopUpVisible } = useSelector((state: RootState) => state.doctor);
     let cities = [... new Set(doctorsData.map(x => x.city))];
 
     const dispatch: AppDispatch = useAppDispatch();
@@ -53,15 +52,18 @@ const BookingForm = () => {
     };
 
     const handleSubmit = (e) => {
+        e.preventDefault()
+
         if (formData.name && formData.city && formData.phone && formData.age && formData.company) {
-            e.preventDefault()
+            dispatch(getDoctorsListByCity({ city: formData.city }));
             dispatch(setPopUpVisibility(true));
+            dispatch(setUserInfo(formData));
         }
     };
 
 
     return (
-        <form className='before:absolute before:inset-[1px] before:bg-[#060f17] before:rounded-2xl form-bg relative justify-self-center self-center rounded-2xl h-max py-8  px-5   w-[500px] flex flex-col gap-4 items-center justify-center '>
+        <section className='before:absolute before:inset-[1px] before:bg-[#060f17] before:rounded-2xl form-bg relative justify-self-center self-center rounded-2xl h-max py-8  px-5   w-[500px] flex flex-col gap-4 items-center justify-center '>
 
             <div className='text-white z-30 flex flex-col gap-4 '>
                 <h6 className='font-bold text-[26px] text-center ' >Book an Appointment for <br></br> <span className='line-through text-[#00acc1] decoration-white'>Rs 1000</span>  FREE</h6>
@@ -77,14 +79,16 @@ const BookingForm = () => {
                     <FormInput svgData={formSvgData[3]} placeholder='City' type='text' value={formData.city} onChange={(value) => handleInputChange('city', value)} />
                     <FormInput svgData={formSvgData[4]} placeholder='Company' type='text' value={formData.company} onChange={(value) => handleInputChange('company', value)} />
 
-                    <div className={` absolute top-[50px] flex flex-col w-full rounded-md overflow-hidden ${doctorsData.length && ' border-solid border-[1px] border-white'} `}>
-                        {cities.map((item) => (
-                            <ul onClick={() => handleSelectCity(item)} className='flex items-center justify-between px-4 py-2 bg-[#060f17] cursor-pointer w-full  border-solid border-b-[1px] border-white'>
-                                <li>{item}</li>
-                            </ul>
+                    {!isPopUpVisible &&
+                        <div className={` absolute top-[50px] flex flex-col w-full rounded-md overflow-hidden ${doctorsData.length && ' border-solid border-[1px] border-white'} `}>
+                            {cities.map((item, i) => (
+                                <ul key={i} onClick={() => handleSelectCity(item)} className='flex items-center justify-between px-4 py-2 bg-[#060f17] cursor-pointer w-full  border-solid border-b-[1px] border-white'>
+                                    <li>{item}</li>
+                                </ul>
+                            ))}
+                        </div>
+                    }
 
-                        ))}
-                    </div>
 
                 </section>
 
@@ -115,11 +119,12 @@ const BookingForm = () => {
                     <section className='submitBtnOverlay'>    </section>
                     <span></span>
                     <h6>Start Your Recovery</h6>
+
                 </button>
 
             </div>
 
-        </form>)
+        </section>)
 }
 
 export default BookingForm

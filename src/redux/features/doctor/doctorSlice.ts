@@ -7,6 +7,14 @@ interface Doctor {
     city: string;
 }
 
+interface User {
+    age: string;
+    name: string;
+    city: string;
+    company: string;
+    phone: string;
+}
+
 interface Review {
     quote: string;
     name: string;
@@ -20,6 +28,7 @@ interface DoctorState {
     doctorsData: Doctor[];
     reviewsData: Review[];
     isPopUpVisible: boolean;
+    userInfo: User | null;
     error: string | null;
 }
 
@@ -62,6 +71,7 @@ const doctorSlice = createSlice({
         doctorsData: [],
         reviewsData: [],
         isPopUpVisible: false,
+        userInfo: null,
         error: null as string | null,
     } as DoctorState,
     reducers: {
@@ -72,7 +82,10 @@ const doctorSlice = createSlice({
 
         setPopUpVisibility: (state, action: PayloadAction<boolean>) => {
             state.isPopUpVisible = action.payload;
-          },
+        },
+        setUserInfo: (state, action: PayloadAction<User>) => {
+            state.userInfo = action.payload;
+        },
 
     },
     extraReducers: (builder) => {
@@ -105,4 +118,4 @@ const doctorSlice = createSlice({
 });
 
 export default doctorSlice.reducer;
-export const { resetDoctorsData , setPopUpVisibility} = doctorSlice.actions;
+export const { resetDoctorsData, setPopUpVisibility, setUserInfo } = doctorSlice.actions;
