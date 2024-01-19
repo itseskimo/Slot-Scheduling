@@ -4,10 +4,14 @@ import { FormInput } from '../../components/FormInput/FormInput';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, RootState, AppDispatch } from '../../redux/store';
 import { getDoctorsListByCity } from '../../redux/features/doctor/doctorSlice';
-import { resetDoctorsData } from '../../redux/features/doctor/doctorSlice';
+import { resetDoctorsData, setPopUpVisibility } from '../../redux/features/doctor/doctorSlice';
+import { MouseEvent } from 'react';
+
 const BookingForm = () => {
 
     const { doctorsData } = useSelector((state: RootState) => state.doctor);
+    let cities = [... new Set(doctorsData.map(x => x.city))];
+
     const dispatch: AppDispatch = useAppDispatch();
 
     const [formData, setFormData] = useState({
@@ -48,6 +52,13 @@ const BookingForm = () => {
         dispatch(resetDoctorsData())
     };
 
+    const handleSubmit = (e) => {
+        if (formData.name && formData.city && formData.phone && formData.age && formData.company) {
+            e.preventDefault()
+            dispatch(setPopUpVisibility(true));
+        }
+    };
+
 
     return (
         <form className='before:absolute before:inset-[1px] before:bg-[#060f17] before:rounded-2xl form-bg relative justify-self-center self-center rounded-2xl h-max py-8  px-5   w-[500px] flex flex-col gap-4 items-center justify-center '>
@@ -67,11 +78,9 @@ const BookingForm = () => {
                     <FormInput svgData={formSvgData[4]} placeholder='Company' type='text' value={formData.company} onChange={(value) => handleInputChange('company', value)} />
 
                     <div className={` absolute top-[50px] flex flex-col w-full rounded-md overflow-hidden ${doctorsData.length && ' border-solid border-[1px] border-white'} `}>
-                        {doctorsData.map((item) => (
-                            <ul onClick={() => handleSelectCity(item.city)} className='flex items-center justify-between px-4 py-2 bg-[#060f17] cursor-pointer w-full  border-solid border-b-[1px] border-white'>
-                                <li>{item.name}</li>
-                                <li>{item.city}</li>
-                                <li>{item.expertise}</li>
+                        {cities.map((item) => (
+                            <ul onClick={() => handleSelectCity(item)} className='flex items-center justify-between px-4 py-2 bg-[#060f17] cursor-pointer w-full  border-solid border-b-[1px] border-white'>
+                                <li>{item}</li>
                             </ul>
 
                         ))}
@@ -102,11 +111,11 @@ const BookingForm = () => {
                     <label className='cursor-pointer'>Show best available doctors for their city</label>
                 </div>
 
-                <div className='submitBtn'>
+                <button className='submitBtn' onClick={handleSubmit}>
                     <section className='submitBtnOverlay'>    </section>
                     <span></span>
                     <h6>Start Your Recovery</h6>
-                </div>
+                </button>
 
             </div>
 

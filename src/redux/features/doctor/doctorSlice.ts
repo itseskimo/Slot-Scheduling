@@ -7,8 +7,19 @@ interface Doctor {
     city: string;
 }
 
+interface Review {
+    quote: string;
+    name: string;
+    designation: string;
+    rating: string;
+    image: string;
+    _id: string
+}
+
 interface DoctorState {
     doctorsData: Doctor[];
+    reviewsData: Review[];
+    isPopUpVisible: boolean;
     error: string | null;
 }
 
@@ -32,10 +43,25 @@ export const getDoctorsListByCity = createAsyncThunk<Doctor[], GetDoctorsListByC
     }
 });
 
+export const getReviews = createAsyncThunk("getReviews", async (_, { rejectWithValue }) => {
+    try {
+        const config = { headers: { "Content-Type": "application/json" } };
+
+        const apiUrl = `https://cute-puce-barracuda-tutu.cyclic.app/reviews-list`;
+        const response = await axios.get(apiUrl, config);
+
+        return response?.data;
+    } catch (error) {
+        return rejectWithValue(error);
+    }
+});
+
 const doctorSlice = createSlice({
     name: "doctors",
     initialState: {
         doctorsData: [],
+        reviewsData: [],
+        isPopUpVisible: false,
         error: null as string | null,
     } as DoctorState,
     reducers: {
@@ -44,6 +70,9 @@ const doctorSlice = createSlice({
             state.doctorsData = [];
         },
 
+        setPopUpVisibility: (state, action: PayloadAction<boolean>) => {
+            state.isPopUpVisible = action.payload;
+          },
 
     },
     extraReducers: (builder) => {
@@ -59,9 +88,21 @@ const doctorSlice = createSlice({
             .addCase(getDoctorsListByCity.rejected, (state, action) => {
                 state.doctorsData = [];
                 state.error = action.payload as string;
+            })
+            .addCase(getReviews.pending, (state) => {
+                state.reviewsData = [];
+                state.error = null;
+            })
+            .addCase(getReviews.fulfilled, (state, action) => {
+                state.reviewsData = action.payload;
+                state.error = null;
+            })
+            .addCase(getReviews.rejected, (state, action) => {
+                state.reviewsData = [];
+                state.error = action.payload as string;
             });
     },
 });
 
 export default doctorSlice.reducer;
-export const { resetDoctorsData} = doctorSlice.actions;
+export const { resetDoctorsData , setPopUpVisibility} = doctorSlice.actions;

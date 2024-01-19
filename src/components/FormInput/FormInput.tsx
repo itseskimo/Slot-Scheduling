@@ -24,6 +24,7 @@ export const FormInput: React.FC<FormInputProps> = ({ svgData, placeholder, type
         type={type}
         value={value}
         onChange={handleInputChange}
+        required
       />
     </div>
   );
