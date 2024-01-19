@@ -11,6 +11,8 @@ const BookingForm = () => {
 
     const { doctorsData, isPopUpVisible } = useSelector((state: RootState) => state.doctor);
     const [uniqueCities, setUniqueCities] = useState<string[]>([])
+    const [keyword, setKeyword] = useState<string>('')
+   
 
     useEffect(() => {
         setUniqueCities([... new Set(doctorsData.map(x => x.city))]);
@@ -30,7 +32,22 @@ const BookingForm = () => {
             setFormData((prevFormData) => ({ ...prevFormData, city: cityParam }));
         }
 
+        
     }, [isPopUpVisible, doctorsData]);
+
+
+    useEffect(()=>{
+        let timer: number;
+
+        if(keyword){
+             timer = setTimeout(() => {
+            dispatch(getDoctorsListByCity({ city: keyword }));
+            console.log('haha', keyword)
+        }, 1000)
+        }
+
+        return () => clearTimeout(timer)
+    },[keyword])
 
     const dispatch: AppDispatch = useAppDispatch();
 
@@ -52,8 +69,7 @@ const BookingForm = () => {
 
 
         if (fieldName === 'city') {
-            dispatch(getDoctorsListByCity({ city: value }));
-            console.log('hi')
+            setKeyword(value)
         }
     };
 
