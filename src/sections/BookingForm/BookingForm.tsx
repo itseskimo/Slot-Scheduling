@@ -1,5 +1,5 @@
 import { formSvgData } from '../../config/data';
-import { useState , useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { FormInput } from '../../components/FormInput/FormInput';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, RootState, AppDispatch } from '../../redux/store';
@@ -14,9 +14,9 @@ const BookingForm = () => {
 
     useEffect(() => {
         setUniqueCities([... new Set(doctorsData.map(x => x.city))]);
-        if(isPopUpVisible)setUniqueCities([])
-    }, [isPopUpVisible,doctorsData]);
-    
+        if (isPopUpVisible) setUniqueCities([])
+    }, [isPopUpVisible, doctorsData]);
+
     const dispatch: AppDispatch = useAppDispatch();
 
     const [formData, setFormData] = useState({
@@ -58,9 +58,9 @@ const BookingForm = () => {
     };
 
     const handleSubmit = (e: SyntheticEvent) => {
-        e.preventDefault()
 
         if (formData.name && formData.city && formData.phone && formData.age && formData.company) {
+            e.preventDefault()
             dispatch(getDoctorsListByCity({ city: formData.city }));
             dispatch(setPopUpVisibility(true));
             dispatch(setUserInfo(formData));
@@ -71,7 +71,7 @@ const BookingForm = () => {
     return (
         <section className='before:absolute before:inset-[1px] before:bg-[#060f17] before:rounded-2xl form-bg relative justify-self-center self-center rounded-2xl h-max py-8  px-5   w-[500px] flex flex-col gap-4 items-center justify-center '>
 
-            <div className='text-white z-30 flex flex-col gap-4 '>
+            <form className='text-white z-30 flex flex-col gap-4 '>
                 <h6 className='font-bold text-[26px] text-center ' >Book an Appointment for <br></br> <span className='line-through text-[#00acc1] decoration-white'>Rs 1000</span>  FREE</h6>
                 <p className='text-center text-[#00acc1]'>60+ Expert Physiotherapists for 200+ Conditions</p>
 
@@ -128,7 +128,7 @@ const BookingForm = () => {
 
                 </button>
 
-            </div>
+            </form>
 
         </section>)
 }

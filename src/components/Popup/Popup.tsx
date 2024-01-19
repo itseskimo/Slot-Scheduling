@@ -50,7 +50,7 @@ const Popup = () => {
                             <button className='px-3 py-[6px] bg-[#00acc1] rounded-md font-semibold' onClick={confirmBooking}>Confirm Your Booking</button>
                         </>
                         :
-                        <span> Appointment Booked with {doctorSelected?.name}</span>
+                        <span> Appointment has been booked with {doctorSelected?.name}</span>
                     }
 
 
