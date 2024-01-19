@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch, RootState, AppDispatch } from '../../redux/store';
 import { getDoctorsListByCity } from '../../redux/features/doctor/doctorSlice';
 import { resetDoctorsData, setPopUpVisibility, setUserInfo } from '../../redux/features/doctor/doctorSlice';
+import { SyntheticEvent } from 'react';
 
 const BookingForm = () => {
 
@@ -51,7 +52,7 @@ const BookingForm = () => {
         dispatch(resetDoctorsData())
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e : SyntheticEvent) => {
         e.preventDefault()
 
         if (formData.name && formData.city && formData.phone && formData.age && formData.company) {
