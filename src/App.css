@@ -17,7 +17,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .testimonial-bg{
-  clip-path: polygon(0 9%, 100% 16%, 100% 100%, 0% 100%);
+  clip-path: polygon(0 9%, 100% 45%, 100% 100%, 0% 100%);
 }
 
 
@@ -122,15 +122,14 @@ input[type=number]::-webkit-outer-spin-button {
 
 .embla__button {
   z-index: 1;
-  color: white;
+  color: rgba(0,172,193,1);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  width: 30px;
-  height: 90px;
+  width: 40px;
+  height: 100px;
   border-radius: 5px;
-  background-color: white;
 }
 
 @media(max-width:768px) {
