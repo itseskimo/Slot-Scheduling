@@ -5,6 +5,58 @@ import { PrevButton, NextButton } from './CarouselBtns'
 
 const Testimonials = () => {
 
+  const reviewsData = [
+    {
+      location: './img/MODEL.jpg',
+      name: 'Will Smith',
+      occupation: 'Actor',
+      experience: 'FixHealth has been a game-changer for me. The personalized care plans and expert advice have truly transformed my health journey.'
+    },
+    {
+      location: './img/host6.jpg',
+      name: 'Emma Watson',
+      occupation: 'Actress',
+      experience: 'I stumbled upon FixHealth, and it turned out to be a hidden gem! The platform is user-friendly, and their team of professionals is top-notch.'
+    },
+    {
+      location: './img/host5.webp',
+      name: 'Chris Hemsworth',
+      occupation: 'Actor',
+      experience: 'FixHealth is my go-to health partner! From nutritional guidance to fitness plans, I feel like I have a dedicated team supporting my health goals.'
+    },
+    {
+      location: './img/host4.jpg',
+      name: 'Jennifer Lopez',
+      occupation: 'Singer',
+      experience: 'FixHealth has exceeded my expectations! The professional and compassionate team truly cares about their clients. I highly recommend FixHealth to anyone looking for a comprehensive and reliable health solution.'
+    },
+    {
+      location: './img/host3.jpg',
+      name: 'Tom Hanks',
+      occupation: 'Actor',
+      experience: `As someone who values simplicity, FixHealth's easy-to-use platform and effective health solutions have been a perfect fit for my lifestyle.`
+    },
+    {
+      location: './img/host2.jpg',
+      name: 'Taylor Swift',
+      occupation: 'Singer',
+      experience: `FixHealth's holistic approach to well-being has made a positive impact on both my physical and mental health. A great choice for those seeking comprehensive care.`
+    },
+    {
+      location: './img/host1.jpg',
+      name: 'Leonardo DiCaprio',
+      occupation: 'Actor',
+      experience: `FixHealth's commitment to preventive care is commendable. The small steps suggested by their experts have led to significant improvements in my overall health.`
+    },
+    // Add more reviews as needed
+  ];
+
+
+
+
+
+
+
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true)
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true)
@@ -52,21 +104,21 @@ const Testimonials = () => {
           <div className="embla__viewport " ref={emblaRef}>
 
             <div className="embla__container ">
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 1, 1, 1, 1, 1, 11, 11, 1, 1, 1, 1].map((_,idx) => (
+              {reviewsData.map((review,idx) => (
                 <div key={idx}
                   className="cursor-pointer p-[16px] text-white mr-[25px] shadow flex flex-col items-center  embla__slide  w-[320px] bg-[#060f17] rounded-3xl">
 
-                  <img src='./img/MODEL.jpg' className='h-[200px] w-full rounded-3xl' />
+                  <img src={review.location} className='h-[200px] w-full rounded-3xl object-cover object-center' />
 
 
                   <ul className='py-2 flex flex-col items-center'>
-                    <li className=" font-semibold text-xl">Pranjal Deep</li>
-                    <li className=" font-light text-sm">Business Owner</li>
+                    <li className=" font-semibold text-xl">{review.name}</li>
+                    <li className=" font-light text-sm">{review.occupation}</li>
                   </ul>
 
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#00acc1" d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" /></svg>
-                  <p className="text-[16px] py-2 text-center">They worked around time zone variations to accomodate my schedule</p>
+                  <p className="text-[16px] py-2 text-center">{`${review.experience.substring(0,80)}...`}</p>
                   <div className='flex items-center gap-1 py-4'>
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
