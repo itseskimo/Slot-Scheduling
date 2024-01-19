@@ -1,5 +1,5 @@
 import { formSvgData } from '../../config/data';
-import { useState } from 'react';
+import { useState , useEffect} from 'react';
 import { FormInput } from '../../components/FormInput/FormInput';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, RootState, AppDispatch } from '../../redux/store';
@@ -10,8 +10,13 @@ import { SyntheticEvent } from 'react';
 const BookingForm = () => {
 
     const { doctorsData, isPopUpVisible } = useSelector((state: RootState) => state.doctor);
-    let cities = [... new Set(doctorsData.map(x => x.city))];
+    const [uniqueCities, setUniqueCities] = useState<string[]>([])
 
+    useEffect(() => {
+        setUniqueCities([... new Set(doctorsData.map(x => x.city))]);
+        if(isPopUpVisible)setUniqueCities([])
+    }, [isPopUpVisible,doctorsData]);
+    
     const dispatch: AppDispatch = useAppDispatch();
 
     const [formData, setFormData] = useState({
@@ -52,7 +57,7 @@ const BookingForm = () => {
         dispatch(resetDoctorsData())
     };
 
-    const handleSubmit = (e : SyntheticEvent) => {
+    const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault()
 
         if (formData.name && formData.city && formData.phone && formData.age && formData.company) {
@@ -82,7 +87,7 @@ const BookingForm = () => {
 
                     {!isPopUpVisible &&
                         <div className={` absolute top-[50px] flex flex-col w-full rounded-md overflow-hidden ${doctorsData.length && ' border-solid border-[1px] border-white'} `}>
-                            {cities.map((item, i) => (
+                            {uniqueCities.map((item, i) => (
                                 <ul key={i} onClick={() => handleSelectCity(item)} className='flex items-center justify-between px-4 py-2 bg-[#060f17] cursor-pointer w-full  border-solid border-b-[1px] border-white'>
                                     <li>{item}</li>
                                 </ul>
