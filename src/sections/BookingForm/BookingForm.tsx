@@ -13,7 +13,7 @@ const BookingForm = () => {
     const [uniqueCities, setUniqueCities] = useState<string[]>([])
     const [keyword, setKeyword] = useState<string>('')
    
-
+console.log(uniqueCities,keyword)
     useEffect(() => {
         setUniqueCities([... new Set(doctorsData.map(x => x.city))]);
         if (isPopUpVisible) setUniqueCities([])
@@ -37,6 +37,8 @@ const BookingForm = () => {
 
 
     useEffect(()=>{
+        if(keyword.length === 0) setUniqueCities([])
+
         let timer: number;
 
         if(keyword){
