@@ -15,6 +15,21 @@ const BookingForm = () => {
     useEffect(() => {
         setUniqueCities([... new Set(doctorsData.map(x => x.city))]);
         if (isPopUpVisible) setUniqueCities([])
+
+
+        const getUrlParameter = (name: string) => {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(window.location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        // Get the 'city' parameter from the URL
+        const cityParam = getUrlParameter('city');
+        if (cityParam) {
+            setFormData((prevFormData) => ({ ...prevFormData, city: cityParam }));
+        }
+
     }, [isPopUpVisible, doctorsData]);
 
     const dispatch: AppDispatch = useAppDispatch();
@@ -29,13 +44,16 @@ const BookingForm = () => {
 
 
     const handleInputChange = (fieldName: string, value: string) => {
+
         setFormData((prevData) => ({
             ...prevData,
             [fieldName]: value,
         }));
 
+
         if (fieldName === 'city') {
             dispatch(getDoctorsListByCity({ city: value }));
+            console.log('hi')
         }
     };
 
