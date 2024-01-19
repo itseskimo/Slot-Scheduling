@@ -5,6 +5,7 @@ interface Doctor {
     expertise: string;
     name: string;
     city: string;
+    _id:string
 }
 
 interface User {
