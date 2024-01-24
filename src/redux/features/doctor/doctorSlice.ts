@@ -1,46 +1,46 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-interface Doctor {
-    expertise: string;
+//Response of Auth Actions
+interface UserInfo {
     name: string;
-    city: string;
-    _id:string
+    token: string;
+    role: string
 }
 
-interface User {
-    age: string;
-    name: string;
-    city: string;
-    company: string;
-    phone: string;
+//Login
+interface LoginInfo {
+    username: string;
+    password: string;
 }
 
-interface Review {
-    quote: string;
-    name: string;
-    designation: string;
-    rating: string;
-    image: string;
-    _id: string
+//Register
+interface RegisterInfo extends LoginInfo {
+    role: string;
 }
+
+//Physio Selected Dates
+interface SelectedDate {
+    day: string;
+    date: string;
+    slots: string[];
+}
+
 
 interface DoctorState {
-    doctorsData: Doctor[];
-    reviewsData: Review[];
-    isPopUpVisible: boolean;
-    userInfo: User | null;
     error: string | null;
+    userInfo: UserInfo | null
+    physioInfo: SelectedDate
+    role: string
 }
 
-interface GetDoctorsListByCityPayload {
-    city: string;
-}
 
-export const getDoctorsListByCity = createAsyncThunk<Doctor[], GetDoctorsListByCityPayload>("getDoctorsListByCity", async (data, { rejectWithValue }) => {
+
+export const register = createAsyncThunk<UserInfo, RegisterInfo>("register", async (data, { rejectWithValue }) => {
+
     try {
         const config = { headers: { "Content-Type": "application/json" } };
-        const apiUrl = `https://cute-puce-barracuda-tutu.cyclic.app/city-doctorslist`;
+        const apiUrl = `https://cute-puce-barracuda-tutu.cyclic.app/register`;
 
         const response = await axios.post(apiUrl, data, config);
         return response.data;
@@ -53,70 +53,109 @@ export const getDoctorsListByCity = createAsyncThunk<Doctor[], GetDoctorsListByC
     }
 });
 
-export const getReviews = createAsyncThunk("getReviews", async (_, { rejectWithValue }) => {
+
+export const login = createAsyncThunk<UserInfo, LoginInfo>("login", async (data, { rejectWithValue }) => {
+
     try {
         const config = { headers: { "Content-Type": "application/json" } };
+        const apiUrl = `https://cute-puce-barracuda-tutu.cyclic.app/login`;
 
-        const apiUrl = `https://cute-puce-barracuda-tutu.cyclic.app/reviews-list`;
-        const response = await axios.get(apiUrl, config);
-
-        return response?.data;
+        const response = await axios.post(apiUrl, data, config);
+        return response.data;
     } catch (error) {
-        return rejectWithValue(error);
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response.data);
+        } else {
+            return rejectWithValue("An error occurred");
+        }
     }
 });
 
+
+export const addPhysioCalendar = createAsyncThunk<String, SelectedDate>("addPhysioCalendar", async (data, { rejectWithValue }) => {
+
+    try {
+        const config = { headers: { "Content-Type": "application/json" } };
+        const apiUrl = `https://cute-puce-barracuda-tutu.cyclic.app/physio-calendar`;
+
+        const response = await axios.post(apiUrl, data, config);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response.data);
+        } else {
+            return rejectWithValue("An error occurred");
+        }
+    }
+});
+
+
 const doctorSlice = createSlice({
     name: "doctors",
+
     initialState: {
-        doctorsData: [],
-        reviewsData: [],
-        isPopUpVisible: false,
-        userInfo: null,
+        userInfo: null as UserInfo | null,
+        role: '',
+        physioInfo: null as SelectedDate | null,
         error: null as string | null,
     } as DoctorState,
+
     reducers: {
 
-        resetDoctorsData(state) {
-            state.doctorsData = [];
+        setRole(state, action) {
+            state.role = action.payload;
+        },
+        setPhysioSlots(state, action) {
+            state.physioInfo = action.payload;
         },
 
-        setPopUpVisibility: (state, action: PayloadAction<boolean>) => {
-            state.isPopUpVisible = action.payload;
-        },
-        setUserInfo: (state, action: PayloadAction<User>) => {
-            state.userInfo = action.payload;
-        },
+
 
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getDoctorsListByCity.pending, (state) => {
-                state.doctorsData = [];
+
+            .addCase(register.pending, (state) => {
+                state.userInfo = null;
                 state.error = null;
             })
-            .addCase(getDoctorsListByCity.fulfilled, (state, action: PayloadAction<Doctor[]>) => {
-                state.doctorsData = action.payload;
+            .addCase(register.fulfilled, (state, action: PayloadAction<UserInfo>) => {
+                state.userInfo = action.payload;
                 state.error = null;
             })
-            .addCase(getDoctorsListByCity.rejected, (state, action) => {
-                state.doctorsData = [];
+            .addCase(register.rejected, (state, action) => {
+                state.userInfo = null;
                 state.error = action.payload as string;
             })
-            .addCase(getReviews.pending, (state) => {
-                state.reviewsData = [];
+
+
+            .addCase(login.pending, (state) => {
+                state.userInfo = null;
                 state.error = null;
             })
-            .addCase(getReviews.fulfilled, (state, action) => {
-                state.reviewsData = action.payload;
+            .addCase(login.fulfilled, (state, action: PayloadAction<UserInfo>) => {
+                state.userInfo = action.payload;
                 state.error = null;
             })
-            .addCase(getReviews.rejected, (state, action) => {
-                state.reviewsData = [];
+            .addCase(login.rejected, (state, action) => {
+                state.userInfo = null;
                 state.error = action.payload as string;
-            });
+            })
+            // .addCase(addPhysioCalendar.pending, (state) => {
+            //     state.physioInfo = null;
+            //     state.error = null;
+            // })
+            // .addCase(addPhysioCalendar.fulfilled, (state, action: PayloadAction<String>) => {
+            //     state.physioInfo = action.payload;
+            //     state.error = null;
+            // })
+            // .addCase(addPhysioCalendar.rejected, (state, action) => {
+            //     state.physioInfo = null;
+            //     state.error = action.payload as string;
+            // })
+
     },
 });
 
 export default doctorSlice.reducer;
-export const { resetDoctorsData, setPopUpVisibility, setUserInfo } = doctorSlice.actions;
+export const { setRole } = doctorSlice.actions;

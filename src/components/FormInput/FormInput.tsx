@@ -2,14 +2,14 @@ import React, { ChangeEvent } from 'react';
 
 
 interface FormInputProps {
-  svgData: string;
   placeholder: string;
+  svgData: string;
   type: string;
   value: string | number;
   onChange: (value: string) => void;
 }
 
-export const FormInput: React.FC<FormInputProps> = ({ svgData, placeholder, type, value, onChange }) => {
+export const FormInput: React.FC<FormInputProps> = ({svgData, placeholder, type, value, onChange }) => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);

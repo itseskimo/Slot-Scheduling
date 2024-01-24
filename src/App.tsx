@@ -1,31 +1,31 @@
-import './App.css'
-import Navbar from './components/Navbar/Navbar'
-import BookingForm from './sections/BookingForm/BookingForm'
-import Testimonials from './components/Testimonials/Testimonials'
-import HeroSection from './sections/HeroSection/HeroSection'
-import Popup from './components/Popup/Popup'
-import { RootState } from './redux/store'
-import { useSelector } from 'react-redux';
+import './App.css';
+import PhysioView from './pages/PhysioView/PhysioView';
+import Auth from './pages/Auth/Auth';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const { isPopUpVisible } = useSelector((state: RootState) => state.doctor);
 
+  
 
   return (
-    <>
-    {isPopUpVisible &&  <Popup />}
-      <Navbar />
-     
-      <main className='grid grid-cols-2 bg-[#060f17] relative' >
-        {/* Overlay */}
-        <div style={{ background: ' linear-gradient(180deg, rgba(255, 255, 255, 0) 72.21%, #060f17 95.42%)' }} className='absolute w-full h-full'> </div>
-        <BookingForm />
-        <HeroSection />
-      </main>
+    <main className='bg-[#060f17] flex items-center justify-center '>
+      <Router>
+        <Routes>
+          {/* --------------USER VIEW------------------ */}
+          <Route path="/" element={<Auth/>} />
+          <Route path="/physio" element={<PhysioView/>} />
+          {/* <Route path="/operations" element={<PhysioView/>} /> */}
+          {/* <Route path="/patient" element={<PhysioView/>} /> */}
 
-      <Testimonials />
-    </>
-  )
+         
+
+    
+         
+
+        </Routes>
+      </Router>
+    </main>
+  );
 }
 
-export default App
+export default App;
