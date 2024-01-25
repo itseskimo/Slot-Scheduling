@@ -2,15 +2,14 @@ import { FormInput } from '../../components/FormInput/FormInput';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { formSvgData } from '../../config/data';
 import Dropdown from '../../components/Dropdown/Dropdown';
-import { useAppDispatch, AppDispatch, RootState } from '../../redux/store';
 import { register, login } from '../../redux/features/doctor/doctorSlice';
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
 
-    const dispatch: AppDispatch = useAppDispatch();
-    const { role, userInfo } = useSelector((state: RootState) => state.doctor);
+    const dispatch = useDispatch();
+    const { role, userInfo } = useSelector((state) => state.doctor);
     const navigate = useNavigate();
 
     const [formToggler, setFormToggler] = useState(false)
@@ -21,7 +20,7 @@ const Auth = () => {
     });
 
 
-    const handleInputChange = (fieldName: string, value: string) => {
+    const handleInputChange = (fieldName, value) => {
 
         setFormData((prevData) => ({
             ...prevData,
@@ -29,7 +28,7 @@ const Auth = () => {
         }));
     };
 
-    function handleSubmit(e: SyntheticEvent) {
+    function handleSubmit(e) {
         e.preventDefault()
 
         if (formData.username && formData.password && role && formToggler) {

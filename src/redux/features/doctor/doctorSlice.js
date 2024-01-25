@@ -1,54 +1,17 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-//Response of Auth Actions
-interface UserInfo {
-    name: string;
-    token: string;
-    role: string
-}
-
-//Login
-interface LoginInfo {
-    username: string;
-    password: string;
-}
-
-//Register
-interface RegisterInfo extends LoginInfo {
-    role: string;
-}
-
-//Post Physio Selected Dates
-interface SelectedDate {
-    day: string;
-    date: string;
-    selectedSlots: string[];
-}
-
-interface BookedDates {
-    calendars: SelectedDate[];
-}
 
 
 
 
 
-interface DoctorState {
-    error: string | null;
-    userInfo: UserInfo | null
-    physioInfo: SelectedDate[] | null
-    bookedSlots: BookedDates[] | null,
-    role: string
-}
 
-
-
-export const register = createAsyncThunk<UserInfo, RegisterInfo>("register", async (data, { rejectWithValue }) => {
+export const register = createAsyncThunk("register", async (data, { rejectWithValue }) => {
 
     try {
         const config = { headers: { "Content-Type": "application/json" } };
-        const apiUrl = `https://cute-puce-barracuda-tutu.cyclic.app/register`;
+        const apiUrl = `https://aerflyt.onrender.com/register`;
 
         const response = await axios.post(apiUrl, data, config);
         return response.data;
@@ -62,7 +25,7 @@ export const register = createAsyncThunk<UserInfo, RegisterInfo>("register", asy
 });
 
 
-export const login = createAsyncThunk<UserInfo, LoginInfo>("login", async (data, { rejectWithValue }) => {
+export const login = createAsyncThunk("login", async (data, { rejectWithValue }) => {
 
     try {
         const config = { headers: { "Content-Type": "application/json" } };
@@ -80,13 +43,13 @@ export const login = createAsyncThunk<UserInfo, LoginInfo>("login", async (data,
 });
 
 
-export const addPhysioCalendar = createAsyncThunk<String, { physioData: SelectedDate[], token: string }>("addPhysioCalendar", async (data, { rejectWithValue }) => {
+export const addPhysioCalendar = createAsyncThunk("addPhysioCalendar", async (data, { rejectWithValue }) => {
 
     try {
         const config = { headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${data.token}` } };
         const apiUrl = `https://aerflyt.onrender.com/physio-calendar`;
 
-        
+
         const response = await axios.post(apiUrl, data.physioData, config);
         return response.data;
     } catch (error) {
@@ -98,7 +61,7 @@ export const addPhysioCalendar = createAsyncThunk<String, { physioData: Selected
     }
 });
 
-export const getPhysioCalendar = createAsyncThunk<BookedDates[], { token: string }>("getPhysioCalendar", async (data, { rejectWithValue }) => {
+export const getPhysioCalendar = createAsyncThunk("getPhysioCalendar", async (data, { rejectWithValue }) => {
 
     try {
         const config = { headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${data.token}` } };
@@ -115,41 +78,58 @@ export const getPhysioCalendar = createAsyncThunk<BookedDates[], { token: string
     }
 });
 
+export const getAllDoctors = createAsyncThunk("getAllDoctors", async (_, { rejectWithValue }) => {
+
+    try {
+        const config = { headers: { "Content-Type": "application/json" } };
+        const apiUrl = `https://aerflyt.onrender.com/get-doctors-info`;
+
+        const response = await axios.get(apiUrl, config);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response.data);
+        } else {
+            return rejectWithValue("An error occurred");
+        }
+    }
+});
+
+
 const doctorSlice = createSlice({
     name: "doctors",
 
     initialState: {
-        userInfo: null as UserInfo | null,
+        userInfo: null,
         role: '',
-        physioInfo: null as SelectedDate | null,
-        bookedSlots: null as SelectedDate | null,
-        error: null as string | null,
-    } as DoctorState,
+        physioInfo: null,
+        bookedSlots: null,
+        doctorsList: null,
+
+        error: null,
+    },
 
     reducers: {
 
         setRole(state, action) {
             state.role = action.payload;
         },
-       
-
-
 
     },
+
     extraReducers: (builder) => {
         builder
-
             .addCase(register.pending, (state) => {
                 state.userInfo = null;
                 state.error = null;
             })
-            .addCase(register.fulfilled, (state, action: PayloadAction<UserInfo>) => {
+            .addCase(register.fulfilled, (state, action) => {
                 state.userInfo = action.payload;
                 state.error = null;
             })
             .addCase(register.rejected, (state, action) => {
                 state.userInfo = null;
-                state.error = action.payload as string;
+                state.error = action.payload;
             })
 
 
@@ -157,14 +137,15 @@ const doctorSlice = createSlice({
                 state.userInfo = null;
                 state.error = null;
             })
-            .addCase(login.fulfilled, (state, action: PayloadAction<UserInfo>) => {
+            .addCase(login.fulfilled, (state, action) => {
                 state.userInfo = action.payload;
                 state.error = null;
             })
             .addCase(login.rejected, (state, action) => {
                 state.userInfo = null;
-                state.error = action.payload as string;
+                state.error = action.payload;
             })
+
             .addCase(addPhysioCalendar.pending, (state) => {
                 state.physioInfo = null;
                 state.error = null;
@@ -175,7 +156,7 @@ const doctorSlice = createSlice({
             // })
             .addCase(addPhysioCalendar.rejected, (state, action) => {
                 state.physioInfo = null;
-                state.error = action.payload as string;
+                state.error = action.payload;
             })
 
 
@@ -183,13 +164,26 @@ const doctorSlice = createSlice({
                 state.bookedSlots = null;
                 state.error = null;
             })
-            .addCase(getPhysioCalendar.fulfilled, (state, action: PayloadAction<BookedDates[]>) => {
+            .addCase(getPhysioCalendar.fulfilled, (state, action) => {
                 state.bookedSlots = action.payload;
                 state.error = null;
             })
             .addCase(getPhysioCalendar.rejected, (state, action) => {
                 state.bookedSlots = null;
-                state.error = action.payload as string;
+                state.error = action.payload;
+            })
+
+            .addCase(getAllDoctors.pending, (state) => {
+                state.doctorsList = null;
+                state.error = null;
+            })
+            .addCase(getAllDoctors.fulfilled, (state, action) => {
+                state.doctorsList = action.payload;
+                state.error = null;
+            })
+            .addCase(getAllDoctors.rejected, (state, action) => {
+                state.doctorsList = null;
+                state.error = action.payload;
             })
     },
 });
