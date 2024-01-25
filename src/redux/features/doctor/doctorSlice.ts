@@ -19,18 +19,26 @@ interface RegisterInfo extends LoginInfo {
     role: string;
 }
 
-//Physio Selected Dates
+//Post Physio Selected Dates
 interface SelectedDate {
     day: string;
     date: string;
-    slots: string[];
+    selectedSlots: string[];
 }
+
+interface BookedDates {
+    calendars: SelectedDate[];
+}
+
+
+
 
 
 interface DoctorState {
     error: string | null;
     userInfo: UserInfo | null
-    physioInfo: SelectedDate
+    physioInfo: SelectedDate[] | null
+    bookedSlots: BookedDates[] | null,
     role: string
 }
 
@@ -58,7 +66,7 @@ export const login = createAsyncThunk<UserInfo, LoginInfo>("login", async (data,
 
     try {
         const config = { headers: { "Content-Type": "application/json" } };
-        const apiUrl = `https://cute-puce-barracuda-tutu.cyclic.app/login`;
+        const apiUrl = `https://aerflyt.onrender.com/login`;
 
         const response = await axios.post(apiUrl, data, config);
         return response.data;
@@ -72,13 +80,14 @@ export const login = createAsyncThunk<UserInfo, LoginInfo>("login", async (data,
 });
 
 
-export const addPhysioCalendar = createAsyncThunk<String, SelectedDate>("addPhysioCalendar", async (data, { rejectWithValue }) => {
+export const addPhysioCalendar = createAsyncThunk<String, { physioData: SelectedDate[], token: string }>("addPhysioCalendar", async (data, { rejectWithValue }) => {
 
     try {
-        const config = { headers: { "Content-Type": "application/json" } };
-        const apiUrl = `https://cute-puce-barracuda-tutu.cyclic.app/physio-calendar`;
+        const config = { headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${data.token}` } };
+        const apiUrl = `https://aerflyt.onrender.com/physio-calendar`;
 
-        const response = await axios.post(apiUrl, data, config);
+        
+        const response = await axios.post(apiUrl, data.physioData, config);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -89,6 +98,22 @@ export const addPhysioCalendar = createAsyncThunk<String, SelectedDate>("addPhys
     }
 });
 
+export const getPhysioCalendar = createAsyncThunk<BookedDates[], { token: string }>("getPhysioCalendar", async (data, { rejectWithValue }) => {
+
+    try {
+        const config = { headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${data.token}` } };
+        const apiUrl = `https://aerflyt.onrender.com/get-physio-schedules`;
+
+        const response = await axios.get(apiUrl, config);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response.data);
+        } else {
+            return rejectWithValue("An error occurred");
+        }
+    }
+});
 
 const doctorSlice = createSlice({
     name: "doctors",
@@ -97,6 +122,7 @@ const doctorSlice = createSlice({
         userInfo: null as UserInfo | null,
         role: '',
         physioInfo: null as SelectedDate | null,
+        bookedSlots: null as SelectedDate | null,
         error: null as string | null,
     } as DoctorState,
 
@@ -105,9 +131,7 @@ const doctorSlice = createSlice({
         setRole(state, action) {
             state.role = action.payload;
         },
-        setPhysioSlots(state, action) {
-            state.physioInfo = action.payload;
-        },
+       
 
 
 
@@ -141,19 +165,32 @@ const doctorSlice = createSlice({
                 state.userInfo = null;
                 state.error = action.payload as string;
             })
-            // .addCase(addPhysioCalendar.pending, (state) => {
-            //     state.physioInfo = null;
-            //     state.error = null;
-            // })
+            .addCase(addPhysioCalendar.pending, (state) => {
+                state.physioInfo = null;
+                state.error = null;
+            })
             // .addCase(addPhysioCalendar.fulfilled, (state, action: PayloadAction<String>) => {
             //     state.physioInfo = action.payload;
             //     state.error = null;
             // })
-            // .addCase(addPhysioCalendar.rejected, (state, action) => {
-            //     state.physioInfo = null;
-            //     state.error = action.payload as string;
-            // })
+            .addCase(addPhysioCalendar.rejected, (state, action) => {
+                state.physioInfo = null;
+                state.error = action.payload as string;
+            })
 
+
+            .addCase(getPhysioCalendar.pending, (state) => {
+                state.bookedSlots = null;
+                state.error = null;
+            })
+            .addCase(getPhysioCalendar.fulfilled, (state, action: PayloadAction<BookedDates[]>) => {
+                state.bookedSlots = action.payload;
+                state.error = null;
+            })
+            .addCase(getPhysioCalendar.rejected, (state, action) => {
+                state.bookedSlots = null;
+                state.error = action.payload as string;
+            })
     },
 });
 
